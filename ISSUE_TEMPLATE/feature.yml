@@ -1,0 +1,61 @@
+name: feature request
+description: something that should exist but doesn't
+labels: ["type: feature", "status: needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        check open issues first — it might already be planned.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: what problem does this solve
+      description: what are you trying to do that you can't do right now
+      placeholder: |
+        i want to declare vlan configuration in velocitee.yml and have it
+        automatically applied to cisco switches, but right now there's no
+        support for switch provisioning at all
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed
+    attributes:
+      label: proposed solution
+      description: how you'd want it to work — config format, commands, behavior
+      placeholder: |
+        add a `switches` section to velocitee.yml that maps to an ansible role
+        targeting cisco ios devices via netmiko or napalm
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: component
+      options:
+        - ansible
+        - terraform
+        - maas
+        - velocitee.yml schema
+        - scripts / cli
+        - docs
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: alternatives considered
+      description: other approaches you thought about and why you rejected them
+
+  - type: textarea
+    id: context
+    attributes:
+      label: environment context
+      description: hardware or topology this would support — helps assess scope
+      placeholder: |
+        cisco catalyst 2960X, IOS 15.2
+        aruba 2930F, ArubaOS 16.x

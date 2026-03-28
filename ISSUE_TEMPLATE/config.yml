@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: documentation
+    url: https://github.com/velocit-ee/docs
+    about: guides, architecture, and deployment walkthroughs
+  - name: general questions
+    url: https://github.com/velocit-ee/core/discussions
+    about: use discussions for questions that aren't bugs or feature requests
