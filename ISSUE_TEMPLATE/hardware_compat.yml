@@ -1,0 +1,62 @@
+name: hardware compatibility
+description: report that velocit.ee works (or doesn't) on specific hardware
+labels: ["type: hardware-compat", "status: needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        hardware compatibility reports help others know what to expect.
+        fill out as much as you can — partial reports are still useful.
+
+  - type: dropdown
+    id: result
+    attributes:
+      label: result
+      options:
+        - works fully
+        - works with workarounds
+        - partially works
+        - does not work
+    validations:
+      required: true
+
+  - type: textarea
+    id: hardware
+    attributes:
+      label: hardware
+      description: make, model, firmware/bios version
+      placeholder: |
+        - proxmox host: dell poweredge r730, idrac 8, bios 2.19.1
+        - nic: intel x540 (ixgbe)
+        - storage: lsi 9300-8i (mpt3sas)
+    validations:
+      required: true
+
+  - type: textarea
+    id: software
+    attributes:
+      label: software versions
+      placeholder: |
+        - proxmox: 8.1.4
+        - ubuntu: 24.04.1 LTS
+        - ansible: 2.16.3
+        - terraform: 1.7.2
+        - velocitee commit: abc1234
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: notes / workarounds
+      description: anything unusual about the setup, required workarounds, caveats
+      placeholder: |
+        had to disable secure boot in bios for maas enrollment to work.
+        everything else deployed clean.
+
+  - type: textarea
+    id: config
+    attributes:
+      label: relevant velocitee.yml snippet
+      description: the node config you used (redact any real IPs or credentials)
+      render: yaml

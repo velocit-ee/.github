@@ -1,0 +1,59 @@
+name: bug report
+description: something broke
+labels: ["type: bug", "status: needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        fill out what you can. the more context the better.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: what happened
+      description: what did you expect vs what actually happened
+      placeholder: |
+        expected: vm deployed with correct static IP
+        got: vm came up with DHCP address instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: steps to reproduce
+      description: exact commands or actions that trigger the bug
+      placeholder: |
+        1. edit velocitee.yml with static IP config
+        2. run scripts/deploy.sh
+        3. VM boots with wrong IP
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: environment
+      description: your hardware and software versions
+      placeholder: |
+        - hypervisor: proxmox 8.1
+        - target os: ubuntu 24.04
+        - ansible: 2.16.3
+        - terraform: 1.7.2
+        - maas: 3.4
+        - velocitee commit: abc1234
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: relevant logs or output
+      description: paste any error output, stack traces, or ansible task failures
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: anything else
+      description: hardware quirks, network topology, things you already tried
