@@ -1,55 +1,64 @@
 # velocit.ee
 
-open source infrastructure automation for schools, labs, and anyone else running real hardware on a shoestring.
+**networks that survive anyone leaving.**
+
+Open-core infrastructure deployment platform for small nonprofits, small businesses, and low-budget organizations. Four independent, modular engines released in phases — each one useful on its own, each one feeding the next.
 
 ---
 
-built at [wiesbaden high school](https://whs-germany.dodea.edu) — proven in a real school lab. now being rebuilt the right way.
+## engines
 
-**the idea:** your network, your servers, your storage — all declared in one file, deployed in one command. no cloud lock-in, no enterprise contracts, no guessing what changed.
+### VME — velocitee metal provisioning engine
+**phase 1 · in development**
 
-```yaml
-# velocitee.yml — the whole lab in one file
-nodes:
-  - hostname: dolus
-    role: compute
-    ip: 172.16.10.58
-    os: ubuntu-24.04
+Runs on a seed machine (laptop or Raspberry Pi) connected to the provisioning network. Serves a dnsmasq + nginx + iPXE stack to PXE boot target hardware and install Proxmox VE or Ubuntu Server fully unattended. Writes a structured handoff manifest on success.
 
-  - hostname: nas01
-    role: storage
-    ip: 172.16.67.4
-    os: truenas-scale
+→ [velocit-ee/vme](https://github.com/velocit-ee/vme)
+
+---
+
+### VNE — velocitee network configuration engine
+**phase 2 · planned**
+
+Consumes the VME handoff manifest. Deploys OPNsense as a VM on Proxmox via Terraform, then configures VLANs, DHCP, DNS, and baseline firewall rules via Ansible. Runs automated connectivity verification before declaring success.
+
+---
+
+### VSE — velocitee services configuration engine
+**phase 3 · planned**
+
+Deploys containerized services onto the verified network, driven by a config bundle. Idempotent Ansible roles. Designed to be re-run safely at any time.
+
+---
+
+### VLE — velocitee lifecycle engine
+**phase 4 · planned**
+
+Monitoring, auto-documentation generated from handoff manifests, config drift detection, and single-command repair.
+
+---
+
+## config sources
+
+Engines accept config from three sources:
+
+- local raw file
+- git repository
+- velocit.ee authenticated registry *(SaaS tier)*
+
+---
+
+## open source + SaaS
+
+The full engine stack (VME → VLE) is **Apache 2.0** licensed and self-hostable. No lock-in.
+
+The [velocit.ee](https://velocit.ee) paid tier adds AI-assisted config generation (guided survey + freeform prompt) and an authenticated config registry — for organizations that want the managed path rather than the DIY one.
+
+Schools and nonprofits get the SaaS tier free.
+
+---
+
 ```
-
----
-
-## what's here
-
-| repo | what it is |
-|------|-----------|
-| [core](https://github.com/velocit-ee/core) | the automation engine — ansible, terraform, maas |
-| [web](https://github.com/velocit-ee/web) | velocit.ee landing page + waitlist backend |
-| [docs](https://github.com/velocit-ee/docs) | guides, architecture, deployment walkthroughs |
-
----
-
-## philosophy
-
-> shed the old. rebuild stronger.
-
-labs die when they're too fragile to touch. velocit.ee is the opposite — every node is reproducible, every config is in git, every deployment is a one-liner.
-
-we're not building for the enterprise. we're building for the people running `dd if=ubuntu.iso` at midnight because the lab needs to be up by 8am.
-
----
-
-## status
-
-early. working. being used in production.
-
-join the waitlist at [velocit.ee](https://velocit.ee) if you want updates.
-
----
-
-*[contribute](https://github.com/velocit-ee/core/blob/main/CONTRIBUTING.md) · [report a bug](https://github.com/velocit-ee/core/issues/new?template=bug.yml) · [inquiries@velocit.ee](mailto:inquiries@velocit.ee)*
+license:  Apache-2.0 (core engines)
+status:   VME in active development · VNE/VSE/VLE planned
+```
