@@ -13,7 +13,7 @@ Open-core infrastructure deployment platform for small nonprofits, small busines
 
 Runs on a seed machine (laptop or Raspberry Pi) connected to the provisioning network. Serves a dnsmasq + nginx + iPXE stack to PXE boot target hardware and install Proxmox VE or Ubuntu Server fully unattended. Writes a structured handoff manifest on success.
 
-→ [velocit-ee/vme](https://github.com/velocit-ee/vme)
+→ [velocit-ee/core — vme/](https://github.com/velocit-ee/core/tree/main/vme)
 
 ---
 
