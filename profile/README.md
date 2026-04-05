@@ -50,9 +50,9 @@ Engines accept config from three sources:
 
 ## open source + SaaS
 
-The full engine stack (VME → VLE) is **Apache 2.0** licensed and self-hostable. No lock-in.
+The full engine stack (VME → VLE) is open source under **AGPL v3** and self-hostable. No lock-in. → [velocit-ee/core](https://github.com/velocit-ee/core)
 
-The [velocit.ee](https://velocit.ee) paid tier adds AI-assisted config generation (guided survey + freeform prompt) and an authenticated config registry — for organizations that want the managed path rather than the DIY one.
+The [velocit.ee](https://velocit.ee) paid tier adds AI-assisted config generation (guided survey + freeform prompt) and an authenticated config registry. The SaaS layer is proprietary and not included in this repository.
 
 Schools and nonprofits get the SaaS tier free.
 
