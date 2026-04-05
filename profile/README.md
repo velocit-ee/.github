@@ -59,6 +59,6 @@ Schools and nonprofits get the SaaS tier free.
 ---
 
 ```
-license:  Apache-2.0 (core engines)
+license:  AGPL v3 (core engines)
 status:   VME in active development · VNE/VSE/VLE planned
 ```
