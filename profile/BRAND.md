@@ -16,8 +16,10 @@ should ask "is that intentional, or just a one-off?"
   generation."
 - **No emoji** in code, commits, or content. The skill list says rendering
   emoji is allowed when explicitly asked; it isn't asked here.
-- **Never mention MAAS** (Canonical's Metal-as-a-Service) anywhere. The
-  comparison hurts more than it helps.
+- **Don't position against MAAS.** velocit.ee is "lighter, lower-resource,
+  scales down to a Pi" — not "MAAS for small orgs". Mentioning MAAS as one
+  of VME's optional backends is fine; using MAAS as a comparison anchor in
+  marketing copy or landing-page hero text isn't.
 
 ## Palette
 
