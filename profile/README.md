@@ -46,7 +46,7 @@ can stop wherever you like.
 ## engines
 
 ### VME — velocitee metal provisioning engine
-**phase 1 · active**
+**Phase 1 · Stable**
 
 Boots target hardware over PXE and runs an unattended OS install. Two
 selectable backends, same handoff contract:
@@ -66,7 +66,7 @@ which every downstream engine consumes.
 → [velocit-ee/core — vme/](https://github.com/velocit-ee/core/tree/main/vme)
 
 ### VNE — velocitee network configuration engine
-**phase 2 · active**
+**Phase 2 · Stable**
 
 Two paths from one CLI:
 
@@ -84,7 +84,7 @@ Two paths from one CLI:
 → [velocit-ee/core — vne/](https://github.com/velocit-ee/core/tree/main/vne)
 
 ### VSE — velocitee services configuration engine
-**phase 3 · planned**
+**Phase 3 · Planned**
 
 Deploys containerised services onto the verified network using
 idempotent Ansible roles, driven by a config bundle. Designed to be
@@ -92,7 +92,7 @@ re-run safely at any time — services converge on the declared state
 rather than being imperatively installed once.
 
 ### VLE — velocitee lifecycle engine
-**phase 4 · planned**
+**Phase 4 · Planned**
 
 Monitoring, auto-documentation generated from the chain of handoff
 manifests, configuration drift detection against the declared state,
@@ -289,5 +289,5 @@ before opening a PR.
 
 ```
 license:  Apache 2.0 (engines)
-status:   VME active · VNE active · VSE planned · VLE planned
+status:   VME stable · VNE stable · VSE planned · VLE planned
 ```
