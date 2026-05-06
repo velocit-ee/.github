@@ -1,0 +1,30 @@
+# pre-commit hooks for velocit-ee/.github.
+#
+# Install once per clone:
+#     pip install pre-commit jsonschema
+#     pre-commit install
+#
+# The single non-trivial hook here is render-engine-status, which keeps
+# profile/README.md in sync with engines.json. CI runs the same check.
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-json
+
+  - repo: local
+    hooks:
+      - id: render-engine-status
+        # Single source of truth for engine status/version is engines.json.
+        # This hook regenerates the marker-delimited regions in profile/README.md
+        # so the rendered markdown can never drift from the data.
+        name: render-engine-status (local)
+        entry: python tools/render_engine_status.py --write
+        language: system
+        files: '^(engines\.json|tools/render_engine_status\.py|tools/engines_schema\.json|profile/README\.md)$'
+        pass_filenames: false
