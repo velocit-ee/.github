@@ -46,7 +46,9 @@ can stop wherever you like.
 ## engines
 
 ### VME — velocitee metal provisioning engine
+<!-- ENGINE-STATUS:BEGIN region=engine-pill-vme -->
 **Phase 1 · Stable**
+<!-- ENGINE-STATUS:END region=engine-pill-vme -->
 
 Boots target hardware over PXE and runs an unattended OS install. Two
 selectable backends, same handoff contract:
@@ -66,7 +68,9 @@ which every downstream engine consumes.
 → [velocit-ee/core — vme/](https://github.com/velocit-ee/core/tree/main/vme)
 
 ### VNE — velocitee network configuration engine
+<!-- ENGINE-STATUS:BEGIN region=engine-pill-vne -->
 **Phase 2 · Stable**
+<!-- ENGINE-STATUS:END region=engine-pill-vne -->
 
 Two paths from one CLI:
 
@@ -84,7 +88,9 @@ Two paths from one CLI:
 → [velocit-ee/core — vne/](https://github.com/velocit-ee/core/tree/main/vne)
 
 ### VSE — velocitee services configuration engine
+<!-- ENGINE-STATUS:BEGIN region=engine-pill-vse -->
 **Phase 3 · Planned**
+<!-- ENGINE-STATUS:END region=engine-pill-vse -->
 
 Deploys containerised services onto the verified network using
 idempotent Ansible roles, driven by a config bundle. Designed to be
@@ -92,7 +98,9 @@ re-run safely at any time — services converge on the declared state
 rather than being imperatively installed once.
 
 ### VLE — velocitee lifecycle engine
+<!-- ENGINE-STATUS:BEGIN region=engine-pill-vle -->
 **Phase 4 · Planned**
+<!-- ENGINE-STATUS:END region=engine-pill-vle -->
 
 Monitoring, auto-documentation generated from the chain of handoff
 manifests, configuration drift detection against the declared state,
@@ -287,7 +295,9 @@ before opening a PR.
 
 ---
 
+<!-- ENGINE-STATUS:BEGIN region=trailing-status -->
 ```
 license:  Apache 2.0 (engines)
 status:   VME stable · VNE stable · VSE planned · VLE planned
 ```
+<!-- ENGINE-STATUS:END region=trailing-status -->
