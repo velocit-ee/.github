@@ -1,17 +1,22 @@
-# velocit.ee
+# Velocitee
 
-**networks that survive anyone leaving.**
+**Bare metal to a documented, running stack.**
 
-Open-core infrastructure deployment platform — bare metal to a documented,
-running stack in four independent engines. Built for the people who keep
-small networks alive: school IT closets, nonprofits, homelabs, anywhere
-the operator might be a volunteer who'll be replaced in two years and
-has to hand off everything they know.
+Velocitee Vector is a pipeline of four independent engines that take hardware
+from bare metal to a documented, running infrastructure stack. Built for the
+people who keep small networks alive: school IT closets, nonprofits, homelabs
+— anywhere the operator might be a volunteer who will be replaced in two years
+and has to hand off everything they know.
 
-The pitch is *lighter, lower-resource, knowable*. Each engine is small,
-single-purpose, and useful on its own. The whole stack runs on a
-Raspberry Pi. The handoff manifest between engines is JSON you can read
-without a tool.
+Each engine is small, single-purpose, and useful on its own. The whole stack
+runs on a Raspberry Pi. The handoff manifest between engines is JSON you can
+read without a tool.
+
+> **Velocitee Vector is 0.1.0 and both implemented engines are alpha.**
+> Two of the four engines exist. They run, they have been used against real
+> hardware, and their primary execution paths are not yet covered by automated
+> tests. Details in
+> [velocit-ee/core](https://github.com/velocit-ee/core#project-status--read-this-first).
 
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/velocit-ee/core/blob/main/LICENSE)
 [![CI](https://github.com/velocit-ee/core/actions/workflows/ci.yml/badge.svg)](https://github.com/velocit-ee/core/actions/workflows/ci.yml)
@@ -47,7 +52,7 @@ can stop wherever you like.
 
 ### VME — velocitee metal provisioning engine
 <!-- ENGINE-STATUS:BEGIN region=engine-pill-vme -->
-**Phase 1 · Stable**
+**Phase 1 · Alpha**
 <!-- ENGINE-STATUS:END region=engine-pill-vme -->
 
 Boots target hardware over PXE and runs an unattended OS install. Two
@@ -69,7 +74,7 @@ which every downstream engine consumes.
 
 ### VNE — velocitee network configuration engine
 <!-- ENGINE-STATUS:BEGIN region=engine-pill-vne -->
-**Phase 2 · Stable**
+**Phase 2 · Alpha**
 <!-- ENGINE-STATUS:END region=engine-pill-vne -->
 
 Two paths from one CLI:
@@ -77,8 +82,11 @@ Two paths from one CLI:
 - **deploy** — provisions [OPNsense](https://opnsense.org) as a VM on
   Proxmox VE, then configures VLANs, DHCP, DNS, and a baseline firewall.
   Runs an automated verification gate before declaring success. Two
-  provisioner backends ship: `velocitee-native` (Python talking
-  Proxmox + OPNsense REST directly) and `opentofu+ansible`.
+  provisioner backends ship: `velocitee-native` (Python talking Proxmox +
+  OPNsense REST directly) and `opentofu+ansible`. The renderer registry holds
+  eleven further names (Pulumi, Salt, Chef, Puppet, CloudFormation, Bicep, Nix,
+  Helm, Packer, cloud-init, ansible-only) that pass config validation and then
+  refuse to run — reserved slots, not options.
 - **join** — discovers the network you're already on, identifies the
   gateway, picks a router adapter (OPNsense / unmanaged catch-all /
   pluggable), and writes a join-mode manifest VSE/VLE can consume.
@@ -196,25 +204,23 @@ choice below is deliberate and reviewed:
 velocit.ee is built around scenarios, not abstract use-cases.
 
 **school IT closet.** A volunteer teacher inherits the rack. A Pi on the
-provisioning network runs VME → VNE → VSE → VLE end-to-end. The next
-volunteer to take over inherits an auto-generated network diagram, a
-manifest of every service running, and a one-command repair tool.
+provisioning network runs VME → VNE today, and the rest of the pipeline as it
+lands. The next volunteer to take over inherits a manifest describing what is
+running rather than folklore.
 
-**small nonprofit.** A junior dev sets up the org's first proper
-network. They run VME on their laptop to install Proxmox on a
-refurbished mini-PC, VNE configures OPNsense + VLANs, VSE deploys their
-existing docker-compose stack onto the new host. VLE keeps the docs
-honest as the team grows.
+**small nonprofit.** A junior dev sets up the org's first proper network.
+They run VME on their laptop to install Proxmox on a refurbished mini-PC, and
+VNE configures OPNsense + VLANs on top of it. Service deployment (VSE) and
+lifecycle management (VLE) are planned, not shipped.
 
-**homelab.** Operator already has Proxmox + OPNsense running. They
-skip VME entirely, use `vne join` to register the existing network,
-and VSE/VLE start managing the services and lifecycle on top of what
-they've already built.
+**homelab.** Operator already has Proxmox + OPNsense running. They skip VME
+entirely and use `vne join` to register the existing network, read-only. VSE and
+VLE would pick up services and lifecycle from there once they exist.
 
 **MAAS shop.** Operator already runs Canonical MAAS for inventory and
-commissioning. They set `backend: maas` in vme-config.yml, point VME
-at their MAAS controller, and the rest of the pipeline (VNE/VSE/VLE)
-plugs into the MAAS-provisioned hosts identically to the builtin path.
+commissioning. They set `backend: maas` in vme-config.yml, point VME at their
+MAAS controller, and VNE plugs into the MAAS-provisioned hosts identically to
+the builtin path.
 
 ---
 
@@ -239,33 +245,32 @@ at VSE. When VSE is done it points you at VLE.
 
 ## config sources
 
-Every engine reads from the same three places:
+Every engine reads config from:
 
-- a local `velocitee.yml` (or per-engine config like `vme-config.yml`)
+- a local `velocitee.yml` (or a per-engine config like `vme-config.yml`)
 - a git repository the engine pulls from
-- the velocit.ee authenticated registry *(SaaS tier — AI-assisted
-  config generation, schema-validated, version history)*
+
+A hosted config registry is intended as part of a future paid tier. It does not
+exist yet, and neither does anything else you could pay us for.
 
 ---
 
-## open source vs SaaS
+## licensing, and how this is meant to pay for itself
 
-The engines are open source under **Apache 2.0** and self-hostable.
-Fork them, modify them, redistribute them, embed them in commercial
-products — go ahead. The patent grant in Apache 2.0 explicitly protects
-you from reprisal.
+The engines are open source under **Apache 2.0** and self-hostable. Fork them,
+modify them, redistribute them, embed them in commercial products — go ahead.
+The patent grant in Apache 2.0 explicitly protects you from reprisal.
 
 → [velocit-ee/core](https://github.com/velocit-ee/core)
 
-The [velocit.ee](https://velocit.ee) paid tier adds:
+The long-term intention is open core: the engines stay Apache 2.0 forever, and
+a hosted layer on top — config generation, a hosted registry, drift alerts —
+is what gets charged for.
 
-- AI-assisted config generation (guided survey + freeform prompt)
-- Authenticated config registry with schema validation + version history
-- Drift alerts and remote diagnostics
-
-The SaaS layer is proprietary and lives in a separate repository. The
-engines stay open. **Schools and registered nonprofits get the SaaS
-tier free.**
+**None of that exists.** There is no hosted service, no account system, no
+pricing, and nothing to buy. If and when there is, it will be announced here,
+and schools and registered nonprofits are intended to get it free. That is a
+statement of intent, not an offer.
 
 ---
 
@@ -275,7 +280,7 @@ tier free.**
   started, architecture, references, contribution guidelines
 - **Engine source:** [velocit-ee/core](https://github.com/velocit-ee/core)
   — VME, VNE, VSE, VLE, shared library
-- **Marketing site:** [velocit.ee](https://velocit.ee)
+- **Website:** [velocit.ee](https://velocit.ee)
 - **Org profile + brand:**
   [velocit-ee/.github](https://github.com/velocit-ee/.github)
 
@@ -298,6 +303,6 @@ before opening a PR.
 <!-- ENGINE-STATUS:BEGIN region=trailing-status -->
 ```
 license:  Apache 2.0 (engines)
-status:   VME stable · VNE stable · VSE planned · VLE planned
+status:   VME alpha · VNE alpha · VSE planned · VLE planned
 ```
 <!-- ENGINE-STATUS:END region=trailing-status -->
