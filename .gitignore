@@ -1,0 +1,7 @@
+# The engine-status renderer and its tests are mirrored here from
+# velocit-ee/core, which brings Python's build artefacts with them.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
