@@ -1,62 +1,59 @@
-name: hardware compatibility
-description: report that velocit.ee works (or doesn't) on specific hardware
+name: Hardware Compatibility Report
+description: Report hardware compatibility test results (success, failure, or caveats) for Velocitee.
 labels: ["type: hardware-compat", "status: needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        hardware compatibility reports help others know what to expect.
-        fill out as much as you can — partial reports are still useful.
+        Hardware compatibility reports help operators across community and enterprise deployments know what hardware works reliably.
 
   - type: dropdown
     id: result
     attributes:
-      label: result
+      label: Compatibility Status
       options:
-        - works fully
-        - works with workarounds
-        - partially works
-        - does not work
+        - Fully Functional (Zero issues, standard automated install)
+        - Functional with Caveats (Requires specific BIOS/boot settings)
+        - Partially Functional (Some features or interfaces unsupported)
+        - Non-Functional (Boot or installation failure)
     validations:
       required: true
 
   - type: textarea
     id: hardware
     attributes:
-      label: hardware
-      description: make, model, firmware/bios version
+      label: Hardware Specifications
+      description: Manufacturer, appliance model, CPU architecture, NICs, and firmware/BIOS version.
       placeholder: |
-        - proxmox host: dell poweredge r730, idrac 8, bios 2.19.1
-        - nic: intel x540 (ixgbe)
-        - storage: lsi 9300-8i (mpt3sas)
+        - System / Motherboard: Supermicro SuperServer SYS-E300-9D
+        - CPU / Architecture: Intel Xeon D-2123IT (x86_64) / 4 cores
+        - NICs: 2x 10GbE SFP+ (ixgbe), 2x 1GbE RJ45 (igb)
+        - Storage: Samsung PM983 NVMe M.2
+        - BIOS / UEFI Version: 1.4b (CSM disabled, UEFI boot)
     validations:
       required: true
 
   - type: textarea
     id: software
     attributes:
-      label: software versions
+      label: Software Stack & Versions
       placeholder: |
-        - proxmox: 8.1.4
-        - ubuntu: 24.04.1 LTS
-        - ansible: 2.16.3
-        - terraform: 1.7.2
-        - velocitee commit: abc1234
+        - Velocitee Engine Version: 0.1.0 (commit SHA)
+        - Hypervisor / OS: Proxmox VE 8.2 / Ubuntu 24.04 LTS
+        - Target Kernel: Linux 6.8.4-pve
     validations:
       required: true
 
   - type: textarea
     id: notes
     attributes:
-      label: notes / workarounds
-      description: anything unusual about the setup, required workarounds, caveats
+      label: Operational Notes & Required Workarounds
+      description: Any specific BIOS tweaks, kernel parameters (`nomodeset`, `pcie_aspm=off`), or driver workarounds.
       placeholder: |
-        had to disable secure boot in bios for maas enrollment to work.
-        everything else deployed clean.
+        Required disabling Secure Boot in UEFI. All NICs recognized out-of-the-box by cloud-init.
 
   - type: textarea
     id: config
     attributes:
-      label: relevant velocitee.yml snippet
-      description: the node config you used (redact any real IPs or credentials)
-      render: yaml
+      label: Relevant Configuration Snippet
+      description: Sanitized `velocitee.yml` or `vme-config.yml` used during the test.

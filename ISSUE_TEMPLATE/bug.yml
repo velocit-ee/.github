@@ -1,59 +1,58 @@
-name: bug report
-description: something broke
+name: Bug Report
+description: Report an unexpected error, failure, or bug in Velocitee.
 labels: ["type: bug", "status: needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        fill out what you can. the more context the better.
+        Please provide detailed context to help maintainers reproduce and resolve the issue quickly.
 
   - type: textarea
     id: what-happened
     attributes:
-      label: what happened
-      description: what did you expect vs what actually happened
+      label: Summary & Expected Behavior
+      description: What happened versus what you expected to happen?
       placeholder: |
-        expected: vm deployed with correct static IP
-        got: vm came up with DHCP address instead
+        Expected: Node boots iPXE and completes cloud-init without timeout.
+        Actual: DHCP timeout during second-stage chainload on Port 4.
     validations:
       required: true
 
   - type: textarea
     id: reproduce
     attributes:
-      label: steps to reproduce
-      description: exact commands or actions that trigger the bug
+      label: Steps to Reproduce
+      description: Exact commands, configurations, or operations that trigger the issue.
       placeholder: |
-        1. edit velocitee.yml with static IP config
-        2. run scripts/deploy.sh
-        3. VM boots with wrong IP
+        1. Configure velocitee.yml with static IP configuration.
+        2. Run `vme deploy` against bare-metal node.
+        3. Observe timeout during initrd extraction.
     validations:
       required: true
 
   - type: textarea
     id: environment
     attributes:
-      label: environment
-      description: your hardware and software versions
+      label: Environment & Versions
+      description: Hardware architecture, operating system, and software versions.
       placeholder: |
-        - hypervisor: proxmox 8.1
-        - target os: ubuntu 24.04
-        - ansible: 2.16.3
-        - terraform: 1.7.2
-        - maas: 3.4
-        - velocitee commit: abc1234
+        - Hardware / Appliance: Protectli FW4B / GL-AXT1800
+        - Hypervisor: Proxmox VE 8.2 / Bare Metal
+        - Target OS: Ubuntu 24.04 LTS
+        - Engine Version / Commit: 0.1.0 / git commit SHA
+        - Python / Rust Version: Python 3.12 / Rust 1.80
     validations:
       required: true
 
   - type: textarea
     id: logs
     attributes:
-      label: relevant logs or output
-      description: paste any error output, stack traces, or ansible task failures
+      label: Logs & Diagnostic Traces
+      description: Paste relevant execution logs, stack traces, or journalctl output.
       render: shell
 
   - type: textarea
     id: additional
     attributes:
-      label: anything else
-      description: hardware quirks, network topology, things you already tried
+      label: Additional Context
+      description: Network topology, VLAN mappings, switch hardware, or other notes.

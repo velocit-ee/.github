@@ -1,43 +1,61 @@
-# licensing
+# Licensing & Intellectual Property Policy
 
-velocit.ee is split across multiple components with different licenses. here's what applies where.
-
----
-
-## velocit-ee/core — apache 2.0
-
-the engine stack (VME, VNE, VSE, VLE and the shared library — Python, with an iPXE/dnsmasq/nginx seed stack and optional OpenTofu/Ansible renderers) is licensed under the [apache license 2.0](https://www.apache.org/licenses/LICENSE-2.0).
-
-you can use it, modify it, redistribute it, and build commercial products on top of it. you must include attribution and the license notice. you cannot use the velocit.ee name or logo to imply endorsement of your product.
-
-the third-party tools velocitee drives or invokes (Proxmox VE, OPNsense, MAAS, OpenTofu, Ansible, nmap, …) keep their own licenses; velocitee talks to them over their APIs or as subprocesses and never links them into its code. the full boundary is documented in the [core README](https://github.com/velocit-ee/core#readme).
+Velocitee components are licensed under distinct terms depending on their operational tier, scope, and target deployment environment. This document delineates the governing licenses across all repositories within the [`velocit-ee`](https://github.com/velocit-ee) organization.
 
 ---
 
-## velocit-ee/web — mit
+## 1. Open Source Core Engines — Apache License 2.0
 
-the landing page and waitlist backend are licensed under the [mit license](https://opensource.org/licenses/MIT).
+The core engine pipeline—including the **Vector Metal Engine (VME)**, **Vector Network Engine (VNE)**, **Vector Services Engine (VSE)**, **Vector Lifecycle Engine (VLE)**, and the shared engine library located in [`velocit-ee/core`](https://github.com/velocit-ee/core)—is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-do whatever you want with it. attribution appreciated but not required.
-
----
-
-## velocit-ee hosted service — proprietary
-
-if velocit.ee ever offers a hosted or managed service, that service is proprietary. the code powering it may not be the same as the open source components above, and no license is granted to use, copy, or redistribute it.
+### Permissions & Obligations
+* **Commercial & Private Use:** You may freely run, modify, redistribute, and integrate the core engines into commercial products and infrastructure.
+* **Attribution & Notice:** All redistributions must include proper copyright attribution and a copy of the Apache 2.0 license.
+* **Patent Protection:** The Apache 2.0 license includes an express grant of patent rights from contributors to users.
+* **Third-Party Subprocesses:** Third-party upstream tools driven or orchestrated by Velocitee (such as Proxmox VE, OPNsense, Canonical MAAS, OpenTofu, Ansible, and nmap) retain their respective upstream licenses. Velocitee interacts with these tools strictly over external REST APIs, CLI binaries, or network protocols and does not link their source into the Python engine distribution. For full boundary definitions, see the [Core Documentation](https://github.com/velocit-ee/core#readme).
 
 ---
 
-## trademarks
+## 2. Web Applications & Frontends — MIT License
 
-"velocit.ee" and the shrimp logo are not covered by any open source license. you can reference the project by name in factual contexts (e.g., "built with velocit.ee tooling"). you cannot use the name or logo in a way that implies endorsement or that your product is officially affiliated with velocit.ee.
+The public landing applications, documentation themes, and web console interfaces (including [`velocit-ee/web`](https://github.com/velocit-ee/web)) are licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
----
-
-## contributing
-
-by submitting a pull request to any velocit-ee repository, you agree to the [Contributor License Agreement](https://github.com/velocit-ee/core/blob/main/CLA.md). in short: your contribution is licensed under the repository's license (apache 2.0 for `core`, mit for `web`), you confirm you have the right to submit it, and you grant velocitee the flexibility to relicense the combined work later. no separate signing step — opening the PR is the agreement.
+* **Terms:** Permissive distribution, modification, private use, and commercial re-use with standard disclaimer of liability.
 
 ---
 
-*for licensing questions: [inquiries@velocit.ee](mailto:inquiries@velocit.ee)*
+## 3. Carrier Edge & Enterprise Offerings — Proprietary
+
+Commercial carrier distributions, embedded router daemons, and enterprise managed services are proprietary and governed by commercial licensing agreements:
+
+* **Vector Gateway (Carrier Edition):** Statically compiled embedded gateway daemons, kernel-level zero-trust quarantine drivers (`nftables`), and hardware-enforced carrier provisioning firmware.
+* **Velocitee Sovereign AI Hub (Enterprise Edition):** Enterprise multilingual PII cleanrooms, compliance receipt ledgers, and sovereign fleet coordination controllers.
+* **Managed & Hosted Platforms:** Multi-tenant fleet controllers, telemetry aggregation portals, and managed configuration registries.
+
+No open-source license is granted for proprietary carrier firmware, managed cloud control planes, or enterprise binaries unless explicitly provided under an enterprise master services or commercial OEM agreement.
+
+---
+
+## 4. Trademarks & Brand Assets
+
+"Velocitee", "Velocitee Vector", the shrimp logomark, and associated brand assets are proprietary trademarks of the Velocitee project and its legal entity.
+
+* **Permitted Use:** You may use the name in factual, non-confusing descriptive contexts (e.g., "orchestrated via Velocitee Vector engines").
+* **Restricted Use:** You may not use Velocitee trademarks or logos in product names, domain names, or marketing materials in a manner that implies official partnership, sponsorship, or endorsement without written authorization.
+
+---
+
+## 5. Contributor Licensing
+
+All contributions submitted via pull requests across the `velocit-ee` organization are subject to the [Velocitee Contributor License Agreement (CLA)](https://github.com/velocit-ee/core/blob/main/CLA.md).
+
+* **Automatic Submission:** Opening a pull request constitutes acceptance of the CLA terms.
+* **Rights Granted:** Contributors license their contributions under the target repository's respective license (Apache 2.0 for `core`, MIT for `web`) and grant the project the authority to defend and re-license the collective work as needed to support long-term sustainability and enterprise partnerships.
+
+---
+
+## Contact & Inquiries
+
+For commercial licensing, enterprise OEM distribution, or legal questions, contact:
+* **Legal & Licensing:** [legal@velocit.ee](mailto:legal@velocit.ee)
+* **General Inquiries:** [inquiries@velocit.ee](mailto:inquiries@velocit.ee)

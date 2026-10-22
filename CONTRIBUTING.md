@@ -1,90 +1,119 @@
-# contributing to velocit.ee
+# Contributing to Velocitee
 
-thanks for wanting to help. here's how it works.
-
----
-
-## before you start
-
-- check [open issues](https://github.com/velocit-ee/core/issues) — your bug or idea might already be tracked
-- for significant changes, open an issue first to discuss before writing code
-- for small fixes (typos, docs, obvious bugs), just open a PR
+Thank you for your interest in contributing to Velocitee. This guide outlines the development standards, code quality gates, and submission workflows required to ensure consistency across the ecosystem.
 
 ---
 
-## development setup
+## 1. Before You Start
 
-The engines are one installable Python distribution (`shared` + `vme` + `vne`).
+* **Issue First for Non-Trivial Changes:** For significant features, architectural modifications, or changes to engine handoff manifests, open an issue first to discuss the design with maintainers.
+* **Review Existing Work:** Check [Open Issues](https://github.com/velocit-ee/core/issues) and active pull requests before starting work to avoid duplicate effort.
+* **Direct PRs for Small Fixes:** Bug fixes, documentation corrections, and test coverage improvements are welcome as direct pull requests.
+
+---
+
+## 2. Repository & Development Setup
+
+The open-source engine stack is organized in [`velocit-ee/core`](https://github.com/velocit-ee/core) as a unified Python distribution (`shared`, `vme`, `vne`, `vse`, `vle`).
 
 ```bash
+# Clone the repository
 git clone https://github.com/velocit-ee/core.git
 cd core
-python -m venv .venv && source .venv/bin/activate
-pip install -e '.[dev]'      # installs the whole stack + test/lint tools
-python -m pytest             # runs every engine's suite from the repo root
-pre-commit install           # optional: run the hooks locally
+
+# Create and activate virtual environment (Python 3.11+ required)
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install editable development distribution and test suites
+pip install -e '.[dev]'
+
+# Verify test suite
+pytest
+
+# Optional: Install pre-commit hooks
+pre-commit install
 ```
 
-requirements: python 3.11+. The OpenTofu/Ansible provisioner backend also
-needs the `tofu` and `ansible-playbook` binaries at runtime (install the
-`.[opentofu_ansible]` extra for the Python side).
+### External Dependencies
+* **Engine Backends:** Testing the `opentofu+ansible` provisioner backend requires `tofu` and `ansible-playbook` binaries installed on your host (install with `pip install -e '.[opentofu_ansible]'`).
+* **Carrier Gateway (Rust):** If contributing to the native carrier edge daemon (`vector-gateway`), a standard Rust 2021 toolchain with `cargo` and `clippy` is required.
 
 ---
 
-## making changes
+## 3. Development Workflow
 
-1. fork the repo
-2. create a branch: `git checkout -b type/short-description`
-   - `fix/` for bug fixes
-   - `feat/` for new features
-   - `docs/` for documentation
-   - `refactor/` for internal restructuring with no behaviour change
-3. make your changes; add or update tests under the relevant `tests/` dir
-4. run `python -m pytest` and `ruff check .` before pushing. Renderer and
-   discovery logic is unit-testable without hardware; paths that drive real
-   Proxmox/OPNsense/MAAS are verified on a lab box (note it in the PR).
-5. commit using [conventional commits](https://www.conventionalcommits.org/):
+1. **Fork and Branch:**
+   Create a focused feature branch from `main`:
+   ```bash
+   git checkout -b <type>/<short-description>
    ```
-   feat(vne): add a Pulumi renderer backend
-   fix(vme): reject a config with no password hash in preflight
-   docs: document the OPNsense supported-version matrix
+   Branch naming prefixes:
+   * `feat/` — New functionality or capabilities
+   * `fix/` — Bug fixes and regression repairs
+   * `docs/` — Documentation updates and architectural guides
+   * `refactor/` — Code refactoring without behavioral or interface changes
+   * `test/` — Test harness additions and coverage improvements
+
+2. **Code Standards & Architecture:**
+   * **Manifest Integrity:** Engines communicate strictly via standardized JSON handoff manifests (`manifest.json`). Interfaces must adhere to the JSON schema definitions.
+   * **Zero Hardcoding:** Never commit hardcoded IP addresses, site credentials, or environment-specific values. Use structured configurations or environment variables.
+   * **Subprocess Hygiene:** Upstream tools (OpenTofu, Ansible, nmap) must be invoked as subprocesses or over REST APIs. Never tightly couple external copyleft libraries into the Python core.
+
+3. **Validation & Quality Gates:**
+   Ensure all tests, formatters, and linters pass before opening a pull request:
+   ```bash
+   # Run pytest across all engine test suites
+   pytest
+
+   # Run Ruff code analysis and formatting checks
+   ruff check .
+   ruff format --check .
    ```
-6. open a pull request against `main`
+
+4. **Conventional Commits:**
+   Format commit messages according to the [Conventional Commits specification](https://www.conventionalcommits.org/):
+   ```
+   feat(vne): add automated verification gate for OPNsense firewall state
+   fix(vme): reject unhashed passwords during preflight validation
+   docs: document OpenWrt cross-compilation pipeline for ARM64 routers
+   ```
 
 ---
 
-## pull request checklist
+## 4. Pull Request Checklist
 
-- [ ] `python -m pytest` passes; new behaviour has a test
-- [ ] `ruff check .` is clean
-- [ ] no hardcoded IPs, credentials, or site-specific values — use config/env
-- [ ] `vme-config.example.yml` / `velocitee.yml` docs updated if new keys added
-- [ ] docs updated if behaviour changed; `engines.json` is the single source
-      for engine status (run `python tools/render_engine_status.py --write`)
-- [ ] conventional commit messages
+Before submitting your pull request, confirm the following criteria:
 
----
-
-## what we won't merge
-
-- changes that only work against one specific vendor's hardware or hypervisor
-  without going through the renderer/backend abstraction
-- anything that phones home, requires a cloud account to run self-hosted, or
-  adds licensing restrictions to the open engines
-- code that hasn't been run at least once
+- [ ] All automated tests pass (`pytest` and, if applicable, `cargo test`).
+- [ ] Code conforms to style guidelines and linter checks pass (`ruff check .`).
+- [ ] New functionality includes corresponding unit or integration tests.
+- [ ] Documentation and example configurations (`velocitee.yml`, `vme-config.example.yml`) are updated to reflect interface changes.
+- [ ] Engine status changes update `engines.json` and are verified with `python tools/render_engine_status.py --check`.
+- [ ] Commits adhere to Conventional Commit formatting.
 
 ---
 
-## reporting security issues
+## 5. Architectural Guardrails (What We Do Not Merge)
 
-do not open a public issue for security vulnerabilities. email [security@velocit.ee](mailto:security@velocit.ee) with a description and, if you have one, a proof of concept. we'll acknowledge within 72 hours. see [SECURITY.md](https://github.com/velocit-ee/.github/blob/main/SECURITY.md) for the full policy.
+To protect the integrity, security, and portability of Velocitee, the following contributions will not be accepted:
+
+* **Vendor-Locked Implementations:** Code targeting specific proprietary hardware or hypervisors without abstraction through the pluggable renderer registry.
+* **Telemetry & Phoning Home:** Any unsolicited phone-home telemetry, forced cloud phone-ins, or dependencies on third-party cloud accounts for self-hosted execution.
+* **Untested Execution Paths:** Pull requests introducing critical engine logic without automated test coverage or verified lab execution logs.
+* **Licensing Encroachment:** Modifications that introduce copyleft license contagion into Apache 2.0 or MIT repositories.
 
 ---
 
-## code of conduct
+## 6. Contributor License Agreement (CLA)
 
-see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+By submitting a pull request to any repository within the `velocit-ee` organization, you agree to the terms of the [Velocitee Contributor License Agreement](https://github.com/velocit-ee/core/blob/main/CLA.md). No separate paperwork is required; the submission of the pull request establishes the agreement.
 
 ---
 
-*questions? open a discussion or email [inquiries@velocit.ee](mailto:inquiries@velocit.ee)*
+## 7. Security & Code of Conduct
+
+* **Security Vulnerabilities:** Never report security vulnerabilities via public GitHub issues. Follow our coordinated disclosure process in [SECURITY.md](SECURITY.md) or email [security@velocit.ee](mailto:security@velocit.ee).
+* **Community Standards:** All contributors and maintainers are expected to adhere to the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+For questions or developer discussions, join our community forums or email [inquiries@velocit.ee](mailto:inquiries@velocit.ee).

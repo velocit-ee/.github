@@ -1,35 +1,37 @@
-## what this does
+## Description
 
-<!-- one paragraph — what changed and why -->
+<!-- Provide a clear summary of what changed and why. -->
 
-## type of change
+## Type of Change
 
-- [ ] bug fix
-- [ ] new feature
-- [ ] refactor (no behavior change)
-- [ ] docs only
-- [ ] infra / ansible / terraform change
+- [ ] Bug fix (non-breaking change fixing an issue)
+- [ ] New feature (non-breaking change adding functionality)
+- [ ] Refactoring (internal restructuring with no user-facing behavioral change)
+- [ ] Performance improvement
+- [ ] Documentation update
+- [ ] CI/CD or build tooling change
 
-## tested on
+## Verification & Environment
 
-<!-- describe the environment where you tested this -->
-<!-- "tested locally in VM" is fine; "untested" is not acceptable -->
+<!-- Detail the test environment and steps used to verify these changes. -->
 
+```markdown
+- Hypervisor / Host:
+- Operating System:
+- Kernel / Architecture:
+- Upstream Tooling (OpenTofu, Ansible, etc.):
+- Test Results:
 ```
-- hypervisor:
-- target os:
-- ansible/terraform version:
-- hardware (if relevant):
-```
 
-## checklist
+## Pull Request Checklist
 
-- [ ] tested against a real environment (not mocked)
-- [ ] no hardcoded IPs, credentials, or site-specific values
-- [ ] `velocitee.yml.example` updated if new variables added
-- [ ] docs updated if behavior changed
-- [ ] conventional commit messages
+- [ ] All automated tests pass (`pytest` and/or `cargo test`).
+- [ ] Linters and formatting checks pass (`ruff check .`, `cargo clippy`).
+- [ ] Verified against a real target environment or hardware lab.
+- [ ] No hardcoded IP addresses, credentials, or environment-specific secrets.
+- [ ] Documentation and example configurations updated for any changed interface.
+- [ ] Commit messages follow the Conventional Commits specification.
 
-## related issues
+## Related Issues
 
-<!-- closes #123 -->
+<!-- Example: Closes #123 -->

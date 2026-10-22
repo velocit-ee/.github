@@ -25,7 +25,7 @@ read without a tool.
 
 ---
 
-## the pipeline
+## The Pipeline
 
 ```mermaid
 flowchart LR
@@ -49,9 +49,9 @@ can stop wherever you like.
 
 ---
 
-## engines
+## Engines & Architectural Stack
 
-### VME — velocitee metal provisioning engine
+### VME — Vector Metal Engine
 <!-- ENGINE-STATUS:BEGIN region=engine-pill-vme -->
 **Phase 1 · Alpha**
 <!-- ENGINE-STATUS:END region=engine-pill-vme -->
@@ -73,7 +73,7 @@ which every downstream engine consumes.
 
 → [velocit-ee/core — vme/](https://github.com/velocit-ee/core/tree/main/vme)
 
-### VNE — velocitee network configuration engine
+### VNE — Vector Network Engine
 <!-- ENGINE-STATUS:BEGIN region=engine-pill-vne -->
 **Phase 2 · Alpha**
 <!-- ENGINE-STATUS:END region=engine-pill-vne -->
@@ -96,7 +96,7 @@ Two paths from one CLI:
 
 → [velocit-ee/core — vne/](https://github.com/velocit-ee/core/tree/main/vne)
 
-### VSE — velocitee services configuration engine
+### VSE — Vector Services Engine
 <!-- ENGINE-STATUS:BEGIN region=engine-pill-vse -->
 **Phase 3 · Planned**
 <!-- ENGINE-STATUS:END region=engine-pill-vse -->
@@ -106,7 +106,7 @@ idempotent Ansible roles, driven by a config bundle. Designed to be
 re-run safely at any time — services converge on the declared state
 rather than being imperatively installed once.
 
-### VLE — velocitee lifecycle engine
+### VLE — Vector Lifecycle Engine
 <!-- ENGINE-STATUS:BEGIN region=engine-pill-vle -->
 **Phase 4 · Planned**
 <!-- ENGINE-STATUS:END region=engine-pill-vle -->
@@ -117,12 +117,9 @@ and single-command repair.
 
 ---
 
-## built on
+## Core Foundation & Dependencies
 
-velocit.ee is glue. The heavy lifting comes from a small set of
-established open-source projects, all permissively licensed and chosen
-deliberately to keep the operator's surface area small and the license
-boundary clean.
+Velocitee is designed with clean architectural boundaries. Core infrastructure tasks are powered by established, battle-tested open-source components, each carefully chosen to keep the operational attack surface minimal and license boundaries clean.
 
 ### Provisioning & boot
 
@@ -200,104 +197,72 @@ choice below is deliberate and reviewed:
 
 ---
 
-## deployment scenarios
+## Deployment Scenarios
 
-velocit.ee is built around scenarios, not abstract use-cases.
+Velocitee is architected for real-world operational environments:
 
-**school IT closet.** A volunteer teacher inherits the rack. A Pi on the
-provisioning network runs VME → VNE today, and the rest of the pipeline as it
-lands. The next volunteer to take over inherits a manifest describing what is
-running rather than folklore.
-
-**small nonprofit.** A junior dev sets up the org's first proper network.
-They run VME on their laptop to install Proxmox on a refurbished mini-PC, and
-VNE configures OPNsense + VLANs on top of it. Service deployment (VSE) and
-lifecycle management (VLE) are planned, not shipped.
-
-**homelab.** Operator already has Proxmox + OPNsense running. They skip VME
-entirely and use `vne join` to register the existing network, read-only. VSE and
-VLE would pick up services and lifecycle from there once they exist.
-
-**MAAS shop.** Operator already runs Canonical MAAS for inventory and
-commissioning. They set `backend: maas` in vme-config.yml, point VME at their
-MAAS controller, and VNE plugs into the MAAS-provisioned hosts identically to
-the builtin path.
+* **Educational & Community IT:** Where IT environments are managed by volunteer or rotating staff. A seed appliance runs VME → VNE to provision physical hardware deterministically, creating permanent, structured manifests that document the environment for future operators.
+* **Small & Medium Enterprises (SMEs):** Organizations setting up sovereign on-premises virtualization. VME provisions bare-metal hypervisors (Proxmox VE) on local hardware, while VNE configures enterprise networking, VLAN segmentation, and firewall boundaries.
+* **Carrier & Homelab Edge:** Operators with existing network infrastructure can skip bare-metal provisioning and execute `vne join` to map existing topology and gateways in read-only mode, providing seamless handoff to services (VSE) and lifecycle management (VLE).
+* **Enterprise MAAS Environments:** For operators already running Canonical MAAS for fleet inventory, VME integrates via REST (`backend: maas`) to orchestrate provisioning while handing off identical manifests to downstream engines.
 
 ---
 
-## quick start
+## Quick Start & Installation
 
 ```bash
-# Install VME on a seed machine (laptop or Pi)
+# Install VME on a seed machine (laptop or edge appliance)
 curl -fsSL https://raw.githubusercontent.com/velocit-ee/core/main/vme/install.sh | bash
 cd ~/vme/vme
 
-vme setup       # interactive config wizard
-vme preflight   # verify the seed machine is ready
-vme deploy      # power on the target — everything else is automatic
+vme setup       # Interactive configuration wizard
+vme preflight   # Verify network interfaces and services
+vme deploy      # Power on the target — automated zero-touch install
 ```
 
-When VME is done it points you at VNE. When VNE is done it points you
-at VSE. When VSE is done it points you at VLE.
+When VME completes, it outputs a validated handoff manifest for VNE. Each engine seamlessly passes control to the next stage in the pipeline.
 
-→ Full guides: [docs.velocit.ee](https://docs.velocit.ee)
-
----
-
-## config sources
-
-Every engine reads config from:
-
-- a local `velocitee.yml` (or a per-engine config like `vme-config.yml`)
-- a git repository the engine pulls from
-
-A hosted config registry is intended as part of a future paid tier. It does not
-exist yet, and neither does anything else you could pay us for.
+→ Comprehensive guides: [docs.velocit.ee](https://docs.velocit.ee)
 
 ---
 
-## licensing, and how this is meant to pay for itself
+## Configuration Hierarchy
 
-The engines are open source under **Apache 2.0** and self-hostable. Fork them,
-modify them, redistribute them, embed them in commercial products — go ahead.
-The patent grant in Apache 2.0 explicitly protects you from reprisal.
+Every engine deterministically resolves configuration from:
 
-→ [velocit-ee/core](https://github.com/velocit-ee/core)
+- A local `velocitee.yml` (or engine-specific configuration file such as `vme-config.yml`)
+- A Git repository referenced by the engine runtime
 
-The long-term intention is open core: the engines stay Apache 2.0 forever, and
-a hosted layer on top — config generation, a hosted registry, drift alerts —
-is what gets charged for.
-
-**None of that exists.** There is no hosted service, no account system, no
-pricing, and nothing to buy. If and when there is, it will be announced here,
-and schools and registered nonprofits are intended to get it free. That is a
-statement of intent, not an offer.
+Centralized configuration registries, automated drift alerts, and fleet policies are managed through carrier and enterprise control planes.
 
 ---
 
-## documentation
+## Licensing & Commercial Architecture
 
-- **Docs:** [docs.velocit.ee](https://docs.velocit.ee) — getting
-  started, architecture, references, contribution guidelines
-- **Engine source:** [velocit-ee/core](https://github.com/velocit-ee/core)
-  — VME, VNE, VSE, VLE, shared library
+Velocitee is built on a clear, sustainable open-core and carrier partnership model:
+
+* **Open-Source Core Engines (Apache 2.0):** The foundational engine stack—VME, VNE, VSE, and VLE—is permanently open source under the Apache License 2.0. Organizations and developers are free to inspect, run, modify, and build on the core engines without fees.  
+  → [velocit-ee/core](https://github.com/velocit-ee/core)
+* **Proprietary Carrier & Enterprise Solutions:** Carrier-grade CPE gateway daemons ([Vector Gateway](https://github.com/velocit-ee/vector-gateway)), hardware-enforced kernel quarantine drivers, sovereign privacy cleanrooms (Velocitee Prism), and multi-tenant fleet management are licensed commercially for telecommunications carriers and enterprise environments.
+* **Community & Educational Access:** Academic institutions, research labs, and registered non-profit organizations receive complimentary access to standard community templates and operational tooling.
+
+---
+
+## Documentation & Resources
+
+- **Documentation:** [docs.velocit.ee](https://docs.velocit.ee) — Architecture guides, references, and tutorials
+- **Core Engine Repository:** [velocit-ee/core](https://github.com/velocit-ee/core) — VME, VNE, VSE, VLE, and shared libraries
+- **Carrier Gateway Repository:** [velocit-ee/vector-gateway](https://github.com/velocit-ee/vector-gateway) — Native Rust edge daemon
 - **Website:** [velocit.ee](https://velocit.ee)
-- **Org profile + brand:**
-  [velocit-ee/.github](https://github.com/velocit-ee/.github)
+- **Organization Profile & Brand:** [velocit-ee/.github](https://github.com/velocit-ee/.github)
 
 ---
 
-## contributing
+## Contributing
 
-All contributors sign a [Contributor License Agreement](https://github.com/velocit-ee/core/blob/main/CLA.md)
-before merge. The CLA is license-agnostic; it grants velocit.ee the
-right to relicense the project later (e.g. dual-licensing for an
-embedded SaaS use-case) without rounding up signatures from every
-historical contributor.
+Contributions from the community are warmly welcomed. All pull requests submitted across the `velocit-ee` organization are covered by the [Contributor License Agreement](https://github.com/velocit-ee/core/blob/main/CLA.md), ensuring that contributions can be defended, maintained, and licensed effectively.
 
-Read the [contributing guide](https://github.com/velocit-ee/core/blob/main/CONTRIBUTING.md)
-and the [code of conduct](https://github.com/velocit-ee/.github/blob/main/CODE_OF_CONDUCT.md)
-before opening a PR.
+Please review our [Contributing Guide](https://github.com/velocit-ee/.github/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/velocit-ee/.github/blob/main/CODE_OF_CONDUCT.md) prior to submitting pull requests.
 
 ---
 

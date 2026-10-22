@@ -1,61 +1,58 @@
-name: feature request
-description: something that should exist but doesn't
+name: Feature Request
+description: Propose a new feature, architecture capability, or engine improvement.
 labels: ["type: feature", "status: needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        check open issues first — it might already be planned.
+        Before submitting, please check open issues and pull requests to ensure your proposal is not already tracked.
 
   - type: textarea
     id: problem
     attributes:
-      label: what problem does this solve
-      description: what are you trying to do that you can't do right now
+      label: Problem Statement
+      description: What challenge or architectural limitation does this proposal solve?
       placeholder: |
-        i want to declare vlan configuration in velocitee.yml and have it
-        automatically applied to cisco switches, but right now there's no
-        support for switch provisioning at all
+        Currently, network port mapping must be manually assigned in vne-config.yml.
+        Adding automatic LLDP/CDP discovery would allow seamless switch port tagging.
     validations:
       required: true
 
   - type: textarea
     id: proposed
     attributes:
-      label: proposed solution
-      description: how you'd want it to work — config format, commands, behavior
+      label: Proposed Solution
+      description: Describe the proposed interface, configuration schema, and behavioral changes.
       placeholder: |
-        add a `switches` section to velocitee.yml that maps to an ansible role
-        targeting cisco ios devices via netmiko or napalm
+        Extend `vne discover` with LLDP listener daemon to detect neighbor port IDs
+        and auto-populate `manifest.json`.
     validations:
       required: true
 
   - type: dropdown
     id: component
     attributes:
-      label: component
+      label: Target Component
       options:
-        - ansible
-        - terraform
-        - maas
-        - velocitee.yml schema
-        - scripts / cli
-        - docs
-        - other
+        - Vector Metal Engine (VME)
+        - Vector Network Engine (VNE)
+        - Vector Services Engine (VSE)
+        - Vector Lifecycle Engine (VLE)
+        - Vector Gateway (Rust Daemon)
+        - Velocitee Prism (AI Privacy Hub)
+        - Web Console & Dashboards
+        - Documentation & Guides
     validations:
       required: true
 
   - type: textarea
     id: alternatives
     attributes:
-      label: alternatives considered
-      description: other approaches you thought about and why you rejected them
+      label: Alternatives Considered
+      description: What other approaches or workarounds did you consider, and why are they less optimal?
 
   - type: textarea
     id: context
     attributes:
-      label: environment context
-      description: hardware or topology this would support — helps assess scope
-      placeholder: |
-        cisco catalyst 2960X, IOS 15.2
-        aruba 2930F, ArubaOS 16.x
+      label: Operational Context & Target Architecture
+      description: Hardware architectures (x86_64, aarch64, riscv64), network topologies, or carrier scenarios where this applies.

@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: documentation
-    url: https://github.com/velocit-ee/docs
-    about: guides, architecture, and deployment walkthroughs
-  - name: general questions
+  - name: Documentation
+    url: https://docs.velocit.ee
+    about: Official architecture guides, engine references, and deployment walkthroughs.
+  - name: GitHub Discussions
     url: https://github.com/velocit-ee/core/discussions
-    about: use discussions for questions that aren't bugs or feature requests
+    about: Ask questions, share homelab/carrier deployments, and discuss ideas with the community.
